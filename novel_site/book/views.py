@@ -1,11 +1,29 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from .models import *
 
 # 根目录
 def index(request):
     books = Book.objects.all()
-    context = {'books': books}
+    categories = Category.objects.all()
+    paginator = Paginator(books, 15)
+    page = request.GET.get('page')
+    books = paginator.get_page(page)
+    context = {
+        'books': books,
+        'categories': categories,
+    }
     return render(request, 'index.html', context)
+
+def category(request, category_name):
+    category = Category.objects.get(category_name=category_name)
+    books = Book.objects.filter(category=category_name)
+    context = {
+        'category': category,
+        'books': books
+    }
+    return render(request, 'category.html', context)
+
 
 # 图书详情页
 def detail(request, book_id):

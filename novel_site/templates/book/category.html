@@ -5,15 +5,13 @@
 	<title>Title</title>
 </head>
 <body>
-	<h1>小说根目录</h1>
+	<h1>分类详情页</h1>
+	<hr>
+	当前分类: {{ category }}
+	<hr>
 	{% for book in books %}
-		<h3>小说名: {{ book }}</h3>
 	<a href="{% url 'detail' book.id %}">{{ book }}</a>
-		<br>
-		<h3>作者: {{ book.author }}</h3>
-		<br>
-		<h3>简介: {{ book.intro }}</h3>
-		<hr>
+	<br>
 	{% endfor %}
 </body>
 </html>

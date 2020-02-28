@@ -57,6 +57,7 @@ class Chapter(models.Model):
     def __str__(self):
         return self.chapter_name
 
+
     class Meta:
         managed = False
         db_table = 'chapter'

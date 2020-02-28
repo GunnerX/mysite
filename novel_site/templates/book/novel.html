@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+	{{ book }}
+{% endblock %}
+
+{% block main %}
+
+<div class="thumbnail">
+	<div class="row">
+
+        <div class="col-xs-8 col-md-3 ">
+        <img src="{% static book.image %}" class="center-block" alt="{{ book }}" width="160" height="220">
+        </div>
+
+		<div class="col-xs-8 col-md-9">
+			<div class="caption">
+				<h3 class="text-muted">{{ book }}</h3>
+				<a href=""><span class="label label-primary">作者: {{ book.author }}</span></a>
+				<a href=""><span class="label label-primary">分类: {{ book.category }}</span></a>
+				<hr>
+				<p class="text-muted">{{ book.intro }}</p>
+			</div>
+		</div>
+
+    </div>
+</div>
+
+
+<div class="row">
+	{% for chapter in chapters %}
+    <div class="col-xs-4"><a href="{% url 'chapter' book.id chapter.id %}">{{ chapter }}</a>
+	    <hr></div>
+	{% endfor %}
+</div>
+
+<a class="btn btn-default" href="#" role="button" style="position:fixed;right:0;bottom:0">
+回到顶部
+</a>
+{% endblock %}
+

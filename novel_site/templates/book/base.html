@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'js/bootstrap.min.js' %}">
+	<title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+<!--导航栏-->
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'detail' %}">首页</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+		{% for category in categories %}
+	      <li><a href="{% url 'detail' category %}">{{ category }}</a></li>
+	      {% endfor %}
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+		<form class="navbar-form navbar-left">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="书名或作者名">
+        </div>
+        <button type="submit" class="btn btn-default">搜索</button>
+      </form>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+<div class="jumbotron">
+		<div class="container">
+            <h1 class="text-danger">我的小说网</h1>
+            <p class="text-dangerMy Novel Site">By GunnerX</p>
+		</div>
+</div>
+
+<!--主体-->
+<div class="container main">
+	<div class="row">
+		<div class="col-md-9 post-list">
+			{% block main %}
+			{% endblock %}
+		</div>
+	</div>
+</div>
+
+<!--	分页逻辑-->
+<div class="col-md-offset-1 col-lg-offset-col-xl-offset-1">
+	<nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li>
+	        {% if books.has_previous %}
+	        <a href="?page=1" aria-label="Previous">首页</a>
+	        <a href="?page={{ books.previous_page_number }}" aria-label="Previous">&laquo;上一页</a>
+            {% endif %}
+            </li>
+
+	        {% for page in books.paginator.page_range %}
+	        <li><a href="?page={{ page }}">{{ page }}</a></li>
+	        {% endfor %}
+
+	        <li>
+		        {% if books.has_next %}
+	            <a href="?page={{ books.next_page_number }}" aria-label="Next">&raquo;下一页</a>
+	            <a href="?page={{ books.paginator.num_pages }}" aria-label="Previous">尾页</a>
+	            {% endif %}
+            </li>
+        </ul>
+	</nav>
+</div>
+
+<!--页脚-->
+<footer class="footer">
+        <div class="container power">
+	        <hr>
+            <p class="text-muted text-center">Power by GunnerX </p>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,17 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Title</title>
-</head>
-<body>
-	<h1>小说详情页</h1>
-	书名:{{ book }}<br>
-	作者:{{ book.author }}<br>
-	分类:{{ book.category }}<br>
-	{% for chapter in chapters %}
-		<h3>{{ chapter.number }} --- <a href="{% url 'chapter' book.id chapter.id %}">{{ chapter }}</a></h3>
-		<hr>
-	{% endfor %}
-</body>
-</html> /{{ book }}/{{ chapter }}.html
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+	{% if category %}
+	{{ category }}
+	{% else %}
+	首页
+	{% endif %}
+{% endblock %}
+
+
+
+{% block main %}
+{% for book in books %}
+<div class="thumbnail">
+	<div class="row">
+
+        <div class="col-xs-8 col-md-2">
+        <img src="{% static book.image %}" alt="{{ book }}" width="140" height="200">
+        </div>
+
+		<div class="col-xs-8 col-md-3">
+			<div class="caption">
+				<h4>{{ book }}</h4>
+				<p>作者: {{ book.author }}</p>
+				<p>分类: {{ book.category }}</p>
+				<p><a href="{% url 'novel' book.id %}" class="btn btn-primary" role="button">查看详情</a></p>
+			</div>
+		</div>
+
+		<div class="col-xs-8 col-md-7">
+			<div class="caption">
+				<p class="text-muted">{{ book.intro|truncatewords:7 }}</p>
+			</div>
+		</div>
+
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

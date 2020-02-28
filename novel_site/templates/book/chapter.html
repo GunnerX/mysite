@@ -1,16 +1,25 @@
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport"
-	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Document</title>
-</head>
-<body>
-	<h1>book: {{ book }}</h1>
-	<h3>{{ chapter.number }} --- {{ chapter }}</h3>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+	{{ chapter }}
+{% endblock %}
+
+{% block main %}
+	<h1 class="text-center">{{ chapter }}</h1>
 	<hr>
-	{{ chapter.content }}
-</body>
-</html>
+	<p class="bg-dark text-white lead">{{ chapter.content }}</p>
+
+<nav aria-label="...">
+  <ul class="pager">
+	  {% if prev_chapter %}
+    <li class="previous"><a href="{% url 'chapter' book.id prev_chapter.id %}"><span aria-hidden="true">&larr;</span> 上一章</a></li>
+	  {% endif %}
+	  {% if next_chapter %}
+    <li class="next"><a href="{% url 'chapter' book.id next_chapter.id %}">下一章 <span aria-hidden="true">&rarr;</span></a></li>
+	  {% endif %}
+  </ul>
+</nav>
+{% endblock %}
+
+chapter.next_in_order(number).id

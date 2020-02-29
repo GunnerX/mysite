@@ -45,12 +45,28 @@
 </nav>
 
 
+
+<!--巨幕-->
 <div class="jumbotron">
 		<div class="container">
             <h1 class="text-danger">我的小说网</h1>
             <p class="text-dangerMy Novel Site">By GunnerX</p>
 		</div>
 </div>
+
+<!--导航条-->
+<ol class="breadcrumb">
+  <li><a href="{% url 'detail' %}">Home</a></li>
+	{% if category %}
+    <li><a href="{% url 'detail' category %}">{{ category }}</a></li>
+	{% endif %}
+        {% if book %}
+		<li><a href="{% url 'novel' book.id %}">{{ book }}</a></li>
+			{% if chapter %}
+			<li class="active">{{ chapter }}</li>
+			{% endif %}
+		{% endif %}
+</ol>
 
 <!--主体-->
 <div class="container main">

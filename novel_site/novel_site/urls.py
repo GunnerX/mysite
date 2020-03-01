@@ -15,11 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from login.views import login, register
+from login.views import login, register, logout
 
 urlpatterns = [
     path('books/', include('book.urls')),
     path('admin/', admin.site.urls),
-    path('login/', login),
-    path('register/', register)
+    path('login/', login, name='login'),
+    path('register/', register, name='register'),
+    path('logout/', logout, name='logout'),
+    path('captcha/', include('captcha.urls'))   # 验证码
 ]

@@ -5,19 +5,22 @@ from comment.models import Comment
 
 # 小说,分类列表页
 def detail(request, category_name=None):
+    all_books = Book.objects.all()
+    hot_books = all_books.order_by('-number')[:10]
     if category_name:   # 分类列表页
         category = Category.objects.get(category_name=category_name)
-        books = Book.objects.filter(category=category_name).order_by('-number')
+        books = all_books.filter(category=category_name).order_by('-number')
     else:               # 首页列表页
         category = None
-        books = Book.objects.all().order_by('-number')[:20]     # 展示收藏最多的前20本小说
+        books = all_books.order_by('?')[:10]        # 随机获得10本书 有问题 遍历了一遍表
+
 
     paginator = Paginator(books, 10)    # 分页逻辑
     page = request.GET.get('page')
     books = paginator.get_page(page)
-
     context = {
         'books': books,
+        'hot_books': hot_books,
         'category': category,
         'categories': Category.get_categories(),
     }
@@ -71,12 +74,12 @@ def add_fav(request, book_id):
 
     book.number += 1
     book.save()
-    return redirect('http://127.0.0.1:8000/books/' + str(book_id))
+    return redirect('books/' + str(book_id))
 
 # 取消收藏
 def del_fav(request, book_id):
     if not request.session.get('is_login', None):
-        return redirect('http://127.0.0.1:8000/books/'+str(book_id))
+        return redirect('books/' + str(book_id))
     user_id = request.session.get('user_id')
     user = User.objects.get(pk=user_id)
     book = Book.objects.get(pk=book_id)
@@ -92,7 +95,7 @@ def chapter(request, book_id, chapter_id):
     book = Book.objects.get(pk=book_id)
     chapters = Chapter.objects.filter(book=book.book_name).order_by('number')
     chapter = chapters.get(pk=chapter_id)
-
+    comments = chapter.comment_set.all().order_by('c_time')
     try:
         prev_chapter = chapters.get(number=(chapter.number-1))
     except Chapter.DoesNotExist:
@@ -102,19 +105,13 @@ def chapter(request, book_id, chapter_id):
     except Chapter.DoesNotExist:
         next_chapter = None
 
-# 评论
-#     user_id = request.session.get('user_id')
-#     user = User.objects.get(pk=user_id)
-
-
-
-
     context = {
         'book': book,
         'chapter': chapter,
         'prev_chapter': prev_chapter,
         'next_chapter': next_chapter,
-        'categories': Category.get_categories()
+        'categories': Category.get_categories(),
+        'comments': comments,
     }
     return render(request, 'chapter.html', context)
 

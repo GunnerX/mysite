@@ -4,8 +4,20 @@
 <head>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<!--		<link rel="stylesheet" href="{% static 'css/bbb.css' %}">-->
+
 	<link rel="stylesheet" href="{% static 'js/bootstrap.min.js' %}">
 	<title>{% block title %}{% endblock %}</title>
+	<style>
+        .sidebar1 {
+		    width: 100px;
+                height: 100px;
+                background: red;
+                position: absolute;
+                right: 0;
+		}
+
+    </style>
 </head>
 <body>
 <!--导航栏-->
@@ -72,19 +84,42 @@
 <!--主体-->
 <div class="container main">
 	<div class="row">
+
 		<div class="col-md-9 post-list">
 			{% block main %}
 			{% endblock %}
 		</div>
 
+	<!--侧边栏-->
 		<div class="col-md-3 post-list">
-			{% if request.session.is_login %}
-			<h3><a href="{% url 'user_space' request.session.user_id %}">当前用户: {{ request.session.user_name }}</a></h3>
-			<h3><a href="{% url 'logout' %}">注销</a></h3>
-			{% else %}
-			<h3><a href="{% url 'login' %}">点击登录</a></h3>
-			{% endif %}
+	        <div class="panel panel-default">
+
+	            {% if request.session.is_login %}
+	            <div class="panel-heading text-center">
+		            <div class="panel-title">
+			            <h3><p class="text-warning">欢迎你! {{ request.session.user_name }}</p></h3>
+		            </div>
+	            </div>
+
+	            <div class="panel-body text-muted text-center">
+		            <p><a href="{% url 'user_space' request.session.user_id %}">我的收藏</a></p>
+		            <p><a href="{% url 'logout' %}">注销</a></p>
+	            </div>
+				{% else %}
+	            <div class="panel-heading text-center">
+		            <div class="panel-title">
+			            <h3><p class="text-warning">未登录！</p></h3>
+			            <p class="text-warning"><a href="{% url 'login' %}">点此登录</a></p>
+		            </div>
+	            </div>
+				{% endif %}
+	        </div>
+
+			{% block sidebar %}
+			{% endblock %}
+
 		</div>
+
 	</div>
 </div>
 
@@ -115,11 +150,11 @@
 
 <!--页脚-->
 <footer class="footer">
-        <div class="container power">
-	        <hr>
-            <p class="text-muted text-center">Power by GunnerX </p>
-        </div>
-    </footer>
+    <div class="container power">
+        <hr>
+        <p class="text-muted text-center">Power by GunnerX </p>
+    </div>
+</footer>
 
 </body>
 </html>

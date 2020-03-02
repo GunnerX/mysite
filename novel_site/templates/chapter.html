@@ -32,6 +32,9 @@
 </nav>
 <hr>
 
+
+
+
 {% if request.session.is_login %}
 <form action="{% url 'add_comment' book.id chapter.id %}" method="post">
 	{% csrf_token %}
@@ -41,8 +44,25 @@
 	<button type="submit" class="">提交</button>
 </form>
 {% else %}
-<p>请登录后评论</p>
+<h3 class="text-danger">请登录后再评论！</h3>
 {% endif %}
 {% endblock %}
 
+{% block sidebar %}
+<div class="panel panel-default">
 
+	<div class="panel-heading text-center">
+		<div class="panel-title">
+			<h3><p>最新评论</p></h3>
+		</div>
+	</div>
+
+    <div class="panel-body">
+	    {% for comment in comments %}
+		<p> {{ comment.user }}: {{ comment.content }}<hr></p>
+
+		{% endfor %}
+    </div>
+
+</div>
+{% endblock %}

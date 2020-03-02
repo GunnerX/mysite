@@ -26,6 +26,12 @@ class Book(models.Model):
     def __str__(self):
         return self.book_name
 
+    @classmethod
+    def get_by_hot(cls):
+        return Book.objects.all().order_by('-number')[:10]
+
+
+
     class Meta:
         verbose_name = "小说"
         verbose_name_plural = "小说"
@@ -66,15 +72,3 @@ class Chapter(models.Model):
         verbose_name_plural = "章节"
         db_table = 'chapter'
         unique_together = (('id', 'chapter_name'),)
-
-
-# class Favorite(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-#     c_time = models.DateTimeField(auto_now_add=True)
-#
-#     def __str__(self):
-#         return str(self.book)
-#
-#     class Meta:
-#         ordering = ["-c_time"]

@@ -1,5 +1,5 @@
 from django.db import models
-
+from login.models import User
 
 class Author(models.Model):
     author_name = models.CharField(max_length=80)
@@ -20,6 +20,8 @@ class Book(models.Model):
     image = models.CharField(max_length=80, blank=True, null=True)
     category = models.CharField(max_length=80, blank=True, null=True)
     author = models.CharField(max_length=80, blank=True, null=True)
+    number = models.IntegerField(default=0)
+    user = models.ManyToManyField(User)     # 多对多，实现收藏功能
 
     def __str__(self):
         return self.book_name
@@ -64,3 +66,15 @@ class Chapter(models.Model):
         verbose_name_plural = "章节"
         db_table = 'chapter'
         unique_together = (('id', 'chapter_name'),)
+
+
+# class Favorite(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+#     c_time = models.DateTimeField(auto_now_add=True)
+#
+#     def __str__(self):
+#         return str(self.book)
+#
+#     class Meta:
+#         ordering = ["-c_time"]

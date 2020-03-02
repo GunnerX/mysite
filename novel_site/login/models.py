@@ -21,3 +21,6 @@ class User(models.Model):
 
     class Meta:
         ordering = ["-c_time"]
+
+
+

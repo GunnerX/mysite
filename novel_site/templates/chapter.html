@@ -30,6 +30,19 @@
 	  {% endif %}
   </ul>
 </nav>
+<hr>
+
+{% if request.session.is_login %}
+<form action="{% url 'add_comment' book.id chapter.id %}" method="post">
+	{% csrf_token %}
+	<div class="form-group">
+		<input type="text" name='comment' class="form-control"  placeholder="说点什么吧" autofocus required>
+	</div>
+	<button type="submit" class="">提交</button>
+</form>
+{% else %}
+<p>请登录后评论</p>
+{% endif %}
 {% endblock %}
 
-chapter.next_in_order(number).id
+

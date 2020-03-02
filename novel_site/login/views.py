@@ -91,3 +91,4 @@ def logout(request):
     # del request.session['user_id']
     # del request.session['user_name']
     return redirect("/login/")
+

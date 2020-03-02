@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from login.views import login, register, logout
+from book.views import user_space
 
 urlpatterns = [
     path('books/', include('book.urls')),
@@ -23,5 +24,6 @@ urlpatterns = [
     path('login/', login, name='login'),
     path('register/', register, name='register'),
     path('logout/', logout, name='logout'),
+    path('user/<int:user_id>/', user_space, name='user_space'),   # 用户个人空间
     path('captcha/', include('captcha.urls'))   # 验证码
 ]

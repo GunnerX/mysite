@@ -19,6 +19,14 @@
 				<h3 class="text-muted">{{ book }}</h3>
 				<a href="#"><span class="label label-primary">作者: {{ book.author }}</span></a>
 				<a href="{% url 'detail' book.category %}"><span class="label label-primary">分类: {{ book.category }}</span></a>
+				<span class="label label-primary">收藏数: {{ book.number }}</span>
+				{% if request.session.is_login %}
+					{% if is_fav %}
+					<a href="{% url 'del_fav' book.id %}"><span class="label label-primary">取消收藏</span></a>
+					{% else %}
+					<a href="{% url 'add_fav' book.id %}"><span class="label label-primary">点击收藏</span></a>
+					{% endif %}
+				{% endif %}
 				<hr>
 				<p class="text-muted">{{ book.intro }}</p>
 			</div>

@@ -2,24 +2,14 @@
 {% load static %}
 
 {% block title %}
-	{% if category %}
-	{{ category }}
-	{% else %}
-	首页
-	{% endif %}
+	搜索
 {% endblock %}
 
 
 
 {% block main %}
 <h2 class="text-muted text-center">
-	{% if category %}
-	{{ category }}
-	{% elif hot_books %}
-	好书推荐
-	{% else %}
-	我的收藏
-	{% endif %}
+	搜索结果
 </h2>
 {% for book in books %}
 <!--每本书的简单介绍-->

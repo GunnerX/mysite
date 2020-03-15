@@ -1,17 +1,22 @@
-# # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+
+# Define here the models for your scraped items
 #
-# # Define here the models for your scraped items
-# #
-# # See documentation in:
-# # https://docs.scrapy.org/en/latest/topics/items.html
-#
-# import scrapy
-#
-#
-# class NovelSpiderItem(scrapy.Item):
-#     # define the fields for your item here like:
-#     # name = scrapy.Field()
-#     pass
-import random
-list = [1,2,3,4,5,6,7,8,9]
-print(random.sample(list, 3))
+# See documentation in:
+# https://docs.scrapy.org/en/latest/topics/items.html
+
+import scrapy
+
+
+class NovelSpiderItem(scrapy.Item):
+    category_name = scrapy.Field()
+    book_name = scrapy.Field()
+    author = scrapy.Field()
+    intro = scrapy.Field()
+    chapter_name = scrapy.Field()
+    number = scrapy.Field()
+    content = scrapy.Field()
+
+    image_urls = scrapy.Field()
+    images  =scrapy.Field()
+

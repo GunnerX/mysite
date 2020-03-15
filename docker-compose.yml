@@ -1,15 +1,20 @@
 version: "3"
+
 services:
   app:
     restart: always
-    build: .  # '点'代表当前目录
-    command: ""
+    build: .
+    command: bash -c "python3 manage.py collectstatic --no-input && python3 manage.py makemigrations && python3 manage.py migrate && gunicorn --timeout=30 --workers=4 --bind :8000 last.wsgi:application"
     volumes:
-      - ./novel_site:/code
-    ports:
-      - "8000:8000"
+      - .:/code
+      - static-volume:/code/collected_static
+    expose:
+      - "8000"
     depends_on:
       - db
+    networks:
+      - web_network
+      - db_network
   db:
     image: mysql:5.7
     volumes:
@@ -19,4 +24,27 @@ services:
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=123456
-      - MYSQL_DATABASE=mysite
+      - MYSQL_DATABASE=thelast
+    networks:
+      - db_network
+  nginx:
+    restart: always
+    image: nginx:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - static-volume:/code/collected_static
+      - ./config/nginx:/etc/nginx/conf.d
+    depends_on:
+      - app
+    networks:
+      - web_network
+
+networks:
+  web_network:
+    driver: bridge
+  db_network:
+    driver: bridge
+
+volumes:
+  static-volume:

@@ -61,11 +61,11 @@ def register(request):
             else:
                 same_name_user = User.objects.filter(name=username)
                 if same_name_user:
-                    message = '用户名已经存在'
+                    message = '用户名已被注册！'
                     return render(request, 'register.html', locals())
                 same_email_user = User.objects.filter(email=email)
                 if same_email_user:
-                    message = '该邮箱已经被注册了！'
+                    message = '邮箱已被注册！'
                     return render(request, 'register.html', locals())
 
                 new_user = User()
@@ -83,7 +83,6 @@ def register(request):
 
 def logout(request):
     if not request.session.get('is_login', None):
-        # 如果本来就未登录，也就没有登出一说
         return redirect("/login/")
     request.session.flush()     # 将session中内容全部删除
     # 或者使用下面的方法,只删除指定的内容

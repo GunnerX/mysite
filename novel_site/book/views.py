@@ -12,7 +12,7 @@ def detail(request, category_name=None):
         books = all_books.filter(category=category_name).order_by('-number')
     else:               # 首页列表页
         category = None
-        books = all_books.order_by('?')[:10]        # 随机获得10本书 有问题 遍历了一遍表
+        books = all_books.order_by('?')[:20]        # 随机获得10本书 有问题 遍历了一遍表
 
 
     paginator = Paginator(books, 10)    # 分页逻辑
@@ -74,7 +74,7 @@ def add_fav(request, book_id):
 
     book.number += 1
     book.save()
-    return redirect('books/' + str(book_id))
+    return redirect('http://127.0.0.1:8000/books/'+str(book_id))
 
 # 取消收藏
 def del_fav(request, book_id):
@@ -97,7 +97,7 @@ def chapter(request, book_id, chapter_id):
     chapter = chapters.get(pk=chapter_id)
     comments = chapter.comment_set.all().order_by('c_time')
     try:
-        prev_chapter = chapters.get(number=(chapter.number-1))
+        prev_chapter = chapters.get(number=(chapter.number-1))  # 上一章下一章
     except Chapter.DoesNotExist:
         prev_chapter = None
     try:
@@ -115,8 +115,9 @@ def chapter(request, book_id, chapter_id):
     }
     return render(request, 'chapter.html', context)
 
-def add_comment(request, book_id, chapter_id):
 
+# 添加评论
+def add_comment(request, book_id, chapter_id):
     if request.method == 'POST':
         user_id = request.session.get('user_id')
         user = User.objects.get(pk=user_id)
@@ -126,7 +127,21 @@ def add_comment(request, book_id, chapter_id):
         comment.user = user
         comment.chapter = chapter
         comment.save()
-        return redirect('/books/{}/{}.html'.format(book_id, chapter_id))
     return redirect('/books/{}/{}.html'.format(book_id, chapter_id))
 
+def search(request):
+    all_books = Book.objects.all()
+    hot_books = all_books.order_by('-number')[:10]
+    if request.method == 'GET':
+        world = request.GET.get('world')
+        books = Book.objects.filter(book_name__icontains=world)
+        context = {
+            'books': books,
+            'hot_books': hot_books,
+            'categories': Category.get_categories(),
+        }
+    return render(request, 'search.html', context)
+
+def about(request):
+    return render(request, 'about.html')
 

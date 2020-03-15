@@ -19,21 +19,21 @@ class NovelSpiderPipeline(object):
         self.cursor = self.db.cursor()
 
     def process_item(self, item, spider):
-        self.cursor.execute('select id from book_category where categoryname = ?', (item['category_name']))
+        self.cursor.execute('select id from book_category where categoryname = {}'.format(item['category_name']))
         category_id = self.cursor.fetchone()
         if not category_id:
-            self.cursor.execute('insert into book_category (categoryname) values(?)', (item['category_name']))
+            self.cursor.execute('insert into book_category (categoryname) values({})'.format(item['category_name']))
             self.db.commit()
-            self.cursor.execute('select id from book_category where categoryname = ?', (item['category_name']))
+            self.cursor.execute('select id from book_category where categoryname = {}'.format(item['category_name']))
             category_id = self.cursor.fetchone()
         category_id = category_id[0]
 
-        self.cursor.execute('select id from book_author where authoryname = ?', (item['author']))
+        self.cursor.execute('select id from book_author where authoryname = {}'.format(item['author']))
         author_id = self.cursor.fetchone()
         if not author_id:
-            self.cursor.execute('insert into book_author (authorname) values(?)', (item['author']))
+            self.cursor.execute('insert into book_author (authorname) values({})'.foramt(item['author']))
             self.db.commit()
-            self.cursor.execute('select id from book_author where authorname = ?', (item['author']))
+            self.cursor.execute('select id from book_author where authorname = {}'.format(item['author']))
             author_id = self.cursor.fetchone()
         author_id  = author_id[0]
 

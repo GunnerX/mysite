@@ -6,7 +6,7 @@ chardet==3.0.4
 constantly==15.1.0
 cryptography==2.8
 cssselect==1.1.0
-Django==2.2.10
+Django==2.2.13
 django-next-prev==1.0.1
 django-ranged-response==0.2.0
 django-simple-captcha==0.5.12

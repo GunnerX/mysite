@@ -13,7 +13,7 @@ django-simple-captcha==0.5.12
 hyperlink==19.0.0
 idna==2.9
 incremental==17.5.0
-lxml==4.5.0
+lxml==4.6.2
 mysqlclient==1.4.6
 parsel==1.5.2
 Pillow==7.0.0
